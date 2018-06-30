@@ -23,6 +23,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/weaveworks/common/middleware"
 	"golang.org/x/net/context"
+	
+	"cloud.google.com/go/profiler"
 )
 
 const (
@@ -42,6 +44,16 @@ func init() {
 }
 
 func main() {
+	// Profiler initialization, best done as early as possible.
+	if err := profiler.Start(profiler.Config{
+		Service:        "catalogue",
+		ServiceVersion: "1.0.0",
+		// ProjectID must be set if not running on GCP.
+		// ProjectID: "my-project",
+	}); err != nil {
+		// TODO: Handle error.
+	}
+	
 	var (
 		port   = flag.String("port", "8081", "Port to bind HTTP listener") // TODO(pb): should be -addr, default ":8081"
 		images = flag.String("images", "./images/", "Image path")
