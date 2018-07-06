@@ -22,7 +22,6 @@ import (
 	"github.com/microservices-demo/catalogue"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/weaveworks/common/middleware"
-	"golang.org/x/net/context"
 )
 
 const (
@@ -60,7 +59,6 @@ func main() {
 
 	// Mechanical stuff.
 	errc := make(chan error)
-	ctx := context.Background()
 
 	// Log domain.
 	var logger log.Logger
@@ -130,7 +128,7 @@ func main() {
 	endpoints := catalogue.MakeEndpoints(service, tracer)
 
 	// HTTP router
-	router := catalogue.MakeHTTPHandler(ctx, endpoints, *images, logger, tracer)
+	router := catalogue.MakeHTTPHandler(endpoints, *images, logger, tracer)
 
 	httpMiddleware := []middleware.Interface{
 		middleware.Instrument{
