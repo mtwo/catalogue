@@ -20,10 +20,7 @@ Checkout the API Spec [here](http://microservices-demo.github.io/api/index?url=h
 ### To build this service
 
 #### Dependencies
-```
-go get -u github.com/FiloSottile/gvt
-gvt restore
-```
+Dependencies are vendored in via the `dep` tool and will automatically be pulled in from the `vendor/` directory during a build.
 
 #### Go tools
 In order to build the project locally you need to make sure that the repository directory is located in the correct
