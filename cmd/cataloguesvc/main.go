@@ -8,6 +8,7 @@ import (
 	"strings"
 	"syscall"
 
+	"cloud.google.com/go/profiler"
 	"github.com/go-kit/kit/log"
 	stdopentracing "github.com/opentracing/opentracing-go"
 	zipkin "github.com/openzipkin/zipkin-go-opentracing"
@@ -41,6 +42,16 @@ func init() {
 }
 
 func main() {
+	// Profiler initialization, best done as early as possible.
+	if err := profiler.Start(profiler.Config{
+		Service:        "myservice",
+		ServiceVersion: "1.0.0",
+		// ProjectID must be set if not running on GCP.
+		// ProjectID: "my-project",
+	}); err != nil {
+		// TODO: Handle error.
+	}
+
 	var (
 		port   = flag.String("port", "80", "Port to bind HTTP listener") // TODO(pb): should be -addr, default ":80"
 		images = flag.String("images", "./images/", "Image path")
